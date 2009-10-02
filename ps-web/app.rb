@@ -7,11 +7,16 @@ gem 'chriseppstein-compass', '~> 0.4'
 require 'compass'
 
 configure do
-  set :views, Proc.new { File.join(File.dirname(__FILE__), 'haml') }
+  set :views, File.dirname(__FILE__)
+
+  Compass.configuration do |config|
+    config.project_path = File.dirname(__FILE__)
+  end
 end
 
 get '/:f.html' do
-  haml params[:f].intern
+  ff = File.join('haml', params[:f])
+  haml ff.intern
 end
 
 get '/images/:f' do
@@ -20,8 +25,6 @@ end
 
 get '/stylesheets/:f.css' do
   content_type 'text/css', :charset => 'utf-8'
-  f = params[:f]
-  sass f.intern, { :sass => { :load_paths => (
-    [ File.join(File.dirname(__FILE__), 'sass') ] + Compass::Frameworks::ALL.map {|x| x.stylesheets_directory })
-  } }
+  ff = File.join('sass', params[:f])
+  sass ff.intern, :sass => Compass.sass_engine_options
 end
