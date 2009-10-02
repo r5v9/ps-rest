@@ -23,6 +23,11 @@ get '/images/:f' do
   send_file File.join(File.dirname(__FILE__), 'images', params[:f])
 end
 
+get '/javascript/:f' do
+  content_type 'text/javascript', :charset => 'utf-8'
+  send_file File.join(File.dirname(__FILE__), 'javascript', params[:f])
+end
+
 get '/stylesheets/:f.css' do
   content_type 'text/css', :charset => 'utf-8'
   ff = File.join('sass', params[:f])
